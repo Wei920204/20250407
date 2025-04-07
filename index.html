@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>右上角選單與菱形</title>
+  <link rel="stylesheet" href="style.css"> <!-- 引入外部 CSS -->
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+    }
+
+    .menu {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      background-color: #ffffff;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      z-index: 3; /* 最上層 */
+    }
+
+    .menu li {
+      position: relative;
+      padding: 15px 20px;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .menu li:last-child {
+      border-bottom: none;
+    }
+
+    .menu li a {
+      text-decoration: none;
+      color: #333;
+      display: block;
+    }
+
+    .menu li a:hover {
+      background-color: #f0f0f0;
+    }
+
+    .submenu {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      background-color: #ffffff;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      z-index: 3;
+    }
+
+    .submenu li {
+      padding: 10px 20px;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .submenu li:last-child {
+      border-bottom: none;
+    }
+
+    .menu li:hover .submenu {
+      display: block;
+    }
+
+    .iframe-container {
+      position: absolute;
+      top: 50px;
+      left: 50px;
+      width: 80%;
+      height: 80%;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      background-color: #ffffff;
+      z-index: 2; /* 中間層 */
+      overflow: hidden;
+      display: none; /* 預設隱藏 */
+    }
+
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1; /* 最底層 */
+    }
+  </style>
+</head>
+<body>
+  <ul class="menu">
+    <li><a href="#" onclick="resetToHome()">首頁</a></li>
+    <li><a href="#about">自我介紹</a></li>
+    <li>
+      <a href="#portfolio">作品集</a>
+      <ul class="submenu">
+        <li><a href="#" onclick="loadIframe('https://wei920204.github.io/20250303/')">第一周作業</a></li>
+        <li><a href="#" onclick="loadIframe('https://wei920204.github.io/20250310/')">第二周作業</a></li>
+        <li><a href="#" onclick="loadIframe('https://wei920204.github.io/20250317/')">第三周作業</a></li>
+        <li><a href="#" onclick="loadIframe('https://wei920204.github.io/20250324/')">第四周作業</a></li>
+      </ul>
+    </li>
+    <li><a href="#quiz">測驗卷</a></li>
+    <li><a href="#videos">教學影片</a></li>
+  </ul>
+
+  <!-- 嵌入 iframe 的容器 -->
+  <div class="iframe-container" id="iframe-container">
+    <iframe id="content-frame"></iframe>
+  </div>
+
+  <script>
+    let circles = [];
+
+    function setup() {
+      createCanvas(windowWidth, windowHeight);
+      background('#bde0fe');
+
+      for (let i = 0; i < 50; i++) {
+        circles.push({
+          x: random(width),
+          y: random(height),
+          size: random(30, 50),
+          color: color(random(255), random(255), random(255))
+        });
+      }
+    }
+
+    function draw() {
+      background('#bde0fe');
+
+      let sizeOffset = map(mouseX, 0, width, 20, 80);
+
+      for (let circle of circles) {
+        fill(circle.color);
+        noStroke();
+        push();
+        translate(circle.x, circle.y);
+        rotate(PI / 4);
+        rectMode(CENTER);
+        rect(0, 0, circle.size + sizeOffset, circle.size + sizeOffset);
+        pop();
+      }
+    }
+
+    // 動態載入 iframe 的內容
+    function loadIframe(url) {
+      const iframeContainer = document.getElementById('iframe-container');
+      const iframe = document.getElementById('content-frame');
+      iframe.src = url;
+      iframeContainer.style.display = 'block'; // 顯示 iframe 容器
+    }
+
+    // 回復到首頁狀態
+    function resetToHome() {
+      const iframeContainer = document.getElementById('iframe-container');
+      const iframe = document.getElementById('content-frame');
+      iframe.src = ''; // 清空 iframe 的內容
+      iframeContainer.style.display = 'none'; // 隱藏 iframe 容器
+    }
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.js"></script>
+</body>
+</html>

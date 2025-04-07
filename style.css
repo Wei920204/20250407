@@ -1,0 +1,45 @@
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  margin: 0;
+  overflow: hidden;
+}
+
+.menu {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.menu li {
+  padding: 15px 20px; /* 增加上下間距 */
+  border-bottom: 1px solid #ccc;
+}
+
+.menu li:last-child {
+  border-bottom: none;
+}
+
+.menu li a {
+  text-decoration: none;
+  color: #333;
+  display: block;
+}
+
+.menu li a:hover {
+  background-color: #f0f0f0;
+}
+
+canvas {
+  display: block;
+}
